@@ -1,0 +1,60 @@
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - build
+      - test
+      - lint
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/cocoapods/metrics
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: make build
+
+  test:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/cocoapods/metrics
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys: [v1-gotestsum-]
+      - run:
+          name: Install Dependencies
+          command: |
+            mkdir -p /tmp/test-reports
+            [[ -e /go/bin/gotestsum ]] && exit
+            curl -sSL https://github.com/gotestyourself/gotestsum/releases/download/v0.3.0/gotestsum_0.3.0_linux_amd64.tar.gz | \
+              tar -xz -C /go/bin gotestsum
+      - save_cache:
+          key: v1-gotestsum-{{ checksum "/go/bin/gotestsum" }}
+          paths: [/go/bin/gotestsum]
+
+      - run:
+          name: Test
+          environment:
+            GOTESTSUM_JUNITFILE: /tmp/test-reports/go-test-report.xml
+          command: make test
+
+      - store_test_results:
+          path: /tmp/test-reports
+
+  lint:
+    docker:
+      - image: golang:1.10
+    working_directory: /go/src/github.com/cocoapods/metrics
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: |
+            go get -u github.com/alecthomas/gometalinter
+            gometalinter --install
+      - run: make lint
