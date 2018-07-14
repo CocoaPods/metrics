@@ -1,9 +1,13 @@
 package aggregator
 
+import (
+	"github.com/cocoapods/metrics/internal/config"
+)
+
 type Aggregator struct {
 }
 
-func NewAggregator() *Aggregator {
+func NewAggregator(c *config.Config) *Aggregator {
 	return &Aggregator{}
 }
 

@@ -1,0 +1,38 @@
+{
+  "Vendor": true,
+  "Deadline": "4m",
+  "Concurrency": 2,
+  "Sort": ["linter", "severity", "path"],
+  "Exclude": [
+      "exported .* should have comment .*or be unexported",
+      "error return value not checked \\(defer",
+      "error return value not checked \\(fmt\\.F?[Pp]rint"
+  ],
+  "Linters": {
+    "gofmt": {"Command": "gofmt -l -s -w"},
+    "goimports": {"Command": "goimports -l -w"}
+  },
+
+  "Enable": [
+    "deadcode",
+    "errcheck",
+    "gocyclo",
+    "gofmt",
+    "goimports",
+    "golint",
+    "ineffassign",
+    "interfacer",
+    "lll",
+    "megacheck",
+    "misspell",
+    "nakedret",
+    "structcheck",
+    "unconvert",
+    "unparam",
+    "varcheck",
+    "vet"
+  ],
+
+  "Cyclo": 10,
+  "LineLength": 170
+}

@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/cocoapods/metrics/aggregator"
+	"github.com/cocoapods/metrics/internal/config"
 )
 
 var DatabaseCommand = &cobra.Command{
@@ -16,7 +17,11 @@ func newAggregateDataCommand() *cobra.Command {
 		Use:   "aggregate",
 		Short: "Rollup data from the warehouse database into the metrics db",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			a := aggregator.NewAggregator()
+			c, err := config.Parse("metrics", []string{".", "/etc/cocoapods-metrics"})
+			if err != nil {
+				return err
+			}
+			a := aggregator.NewAggregator(c)
 			return a.Aggregate()
 		},
 	}

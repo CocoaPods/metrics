@@ -1,10 +1,11 @@
 package config
 
 import (
-	"gotest.tools/assert"
-	"gotest.tools/fs"
 	"os"
 	"testing"
+
+	"gotest.tools/assert"
+	"gotest.tools/fs"
 )
 
 func TestConfigDefaults(t *testing.T) {
