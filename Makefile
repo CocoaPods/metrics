@@ -1,3 +1,6 @@
+CIRCLE_BUILD_NUM ?= dev
+TAG?=0.0.$(CIRCLE_BUILD_NUM)-$(shell git rev-parse --short HEAD)
+
 DATE = $(shell date "+%FT%T%z")
 
 PREFIX?=$(shell pwd)
@@ -11,7 +14,7 @@ BUILDDIR := ${PREFIX}/cross
 
 # Populate version variables
 # Add to compile time flags
-CTIMEVAR=-X $(PKG)/cmd.BuildDate=$(DATE) -X $(PKG)/cmd.VERSION=$(TAG)
+CTIMEVAR=-X $(PKG)/cmd.BuildDate=$(DATE) -X $(PKG)/cmd.Version=$(TAG)
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 
 # List the GOOS and GOARCH to build
