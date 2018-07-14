@@ -17,11 +17,14 @@ func newAggregateDataCommand() *cobra.Command {
 		Use:   "aggregate",
 		Short: "Rollup data from the warehouse database into the metrics db",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := config.Parse("metrics", []string{".", "/etc/cocoapods-metrics"})
+			c, err := config.Parse("metrics.toml", []string{"./metrics.toml"})
 			if err != nil {
 				return err
 			}
-			a := aggregator.NewAggregator(c)
+			a, err := aggregator.NewAggregator(c)
+			if err != nil {
+				return err
+			}
 			return a.Aggregate()
 		},
 	}

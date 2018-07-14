@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -81,6 +82,8 @@ func Parse(name string, paths []string) (*Config, error) {
 			Schema:       v.GetString("metrics.schema"),
 		},
 	}
+
+	fmt.Printf("Config: %v\n\n", c.WarehouseDB)
 
 	return c, nil
 }

@@ -1,0 +1,21 @@
+version: "2.1"
+
+services:
+  postgres:
+    image: postgres:9.5.5-alpine
+    ports: ["5432:5432"]
+    environment:
+        POSTGRES_USER: root
+
+  db-migration:
+    build:
+      context: .
+      dockerfile: ./sql/Dockerfile
+    volumes:
+      - ./sql:/flyway/sql
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_NAME: root
+      DATABASE_USER: root
+    depends_on:
+      - postgres
